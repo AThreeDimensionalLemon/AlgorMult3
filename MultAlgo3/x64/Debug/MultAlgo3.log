@@ -1,2 +1,2 @@
 ﻿  main.cpp
-  MultAlgo3.vcxproj -> C:\Users\Eisig Liang\source\repos\MultAlgo3\x64\Debug\MultAlgo3.exe
+C:\Users\Eisig Liang\source\repos\MultAlgo3\MultAlgo3\main.cpp(57,1): error C4716: 'multC': must return a value
