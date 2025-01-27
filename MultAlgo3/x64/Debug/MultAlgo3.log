@@ -1,4 +1,4 @@
 ﻿  main.cpp
 C:\Users\Eisig Liang\source\repos\MultAlgo3\MultAlgo3\main.cpp(76,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Eisig Liang\source\repos\MultAlgo3\MultAlgo3\main.cpp(109,58): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+C:\Users\Eisig Liang\source\repos\MultAlgo3\MultAlgo3\main.cpp(110,58): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
   MultAlgo3.vcxproj -> C:\Users\Eisig Liang\source\repos\MultAlgo3\x64\Debug\MultAlgo3.exe

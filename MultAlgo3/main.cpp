@@ -111,11 +111,14 @@ static int multB(int inMultiplicand, int inMultiplier) {
     }
 }
 
-static int multC(int inMultiplicand, int inMultiplier) {
+static int multC(int multiplicand, int multiplier) {
 
-    // Schönhage–Strassen algorithm
+    // Repeated addition
 
     int result = 0;
+
+    for (int i = 0; i < multiplier; i++)
+        result += multiplicand;
 
     return result;
 }
