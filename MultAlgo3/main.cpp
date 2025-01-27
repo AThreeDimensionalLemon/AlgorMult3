@@ -2,25 +2,42 @@
 #include <vector>
 using namespace std;
 
-int multA(int inMultiplicand, int inMultiplier) {
+static vector<int> makeIterable(int number) {
+
+    // Make integers iterable
+
+    vector<int> result;
+    
+    while (number != 0) {
+        result.push_back(number % 10);
+        number /= 10;
+    }
+
+    return result;
+}
+
+static int rebuildNumber(vector<int> digits) {
+    int number = 0;
+
+    for (int i = 0; i < digits.size(); i++) {
+        int place = 1;
+
+        for (int j = 0; j < i; j++)
+            place *= 10;
+
+        number += digits[i] * place;
+    }
+
+    return number;
+}
+
+static int multA(int inMultiplicand, int inMultiplier) {
 
     // Long multiplication
 
     int result = 0;
-
-    // Make integer arguements iterable
-    vector<int> multiplicand;
-    vector<int> multiplier;
-
-    while (inMultiplicand != 0) {
-        multiplicand.push_back(inMultiplicand % 10);
-        inMultiplicand /= 10;
-    }
-
-    while (inMultiplier != 0) {
-        multiplier.push_back(inMultiplier % 10);
-        inMultiplier /= 10;
-    }
+    vector<int> multiplicand = makeIterable(inMultiplicand);
+    vector<int> multiplier = makeIterable(inMultiplier);
 
     // Implementation of algorithm
     for (int i = 0; i < multiplicand.size(); i++) {
@@ -45,16 +62,56 @@ int multA(int inMultiplicand, int inMultiplier) {
     return result;
 }
 
-int multB(int inMultiplicand, int inMultiplier) {
+static int multB(int inMultiplicand, int inMultiplier) {
 
     // Karatsuba multiplication
 
-    int result = 0;
+    vector<int> multiplicand = makeIterable(inMultiplicand);
+    vector<int> multiplier = makeIterable(inMultiplier);
 
-    return result;
+    if (multiplicand.size() < 4 and multiplier.size() < 4)
+        return multA(inMultiplicand, inMultiplier); // More efficient when numbers are this small
+    
+    else {
+        int m = multiplicand.size() / 2 + (multiplicand.size() % 2);
+        int x0;
+        int x1;
+        int y0;
+        int y1;
+
+        if (multiplicand.size() % 2 == 0) {
+            vector<int> x1Vector(multiplicand.begin(), multiplicand.end() - m);
+            x0 = rebuildNumber(x1Vector);
+        }
+        else {
+            vector<int> x1Vector(multiplicand.begin(), multiplicand.end() - (m - 1));
+            x0 = rebuildNumber(x1Vector);
+        }
+
+        vector<int> x0Vector(multiplicand.begin() + m, multiplicand.end());
+        x1 = rebuildNumber(x0Vector);
+
+        if (multiplier.size() % 2 == 0) {
+            vector<int> y1Vector(multiplier.begin(), multiplier.end() - m);
+            y0 = rebuildNumber(y1Vector);
+        }
+        else {
+            vector<int> y1Vector(multiplier.begin(), multiplier.end() - (m - 1));
+            y0 = rebuildNumber(y1Vector);
+        }
+
+        vector<int> y0Vector(multiplier.begin() + m, multiplier.end());
+        y1 = rebuildNumber(y0Vector);
+
+        // Implementation of algorithm
+        int z0 = x0 * y0;
+        int z2 = x1 * y1;
+        int z1 = (x1 + x0) * (y0 + y1) - z2 - z0;
+        return z2 * pow(pow(10, m), 2) + z1 * pow(10, m) + z0;
+    }
 }
 
-int multC(int inMultiplicand, int inMultiplier) {
+static int multC(int inMultiplicand, int inMultiplier) {
 
     // Schönhage–Strassen algorithm
 
@@ -66,6 +123,6 @@ int multC(int inMultiplicand, int inMultiplier) {
 int main() {
     cout << "Eisig Liang - 26 Jan. 2025" << endl;
     cout << multA(281, 2145) << endl;
-    /*cout << multB(281, 2145) << endl;
-    cout << multC(281, 2145) << endl;*/
+    cout << multB(281, 2145) << endl;
+    cout << multC(281, 2145) << endl;
 }
